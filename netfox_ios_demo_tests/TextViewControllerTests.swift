@@ -36,7 +36,7 @@ final class TextViewControllerTests: XCTestCase {
 
 		XCTAssertEqual(jokeLoader.receivedMessages, [.loadJoke])
 
-		jokeLoader.completeLoadJoke(with: "Any joke")
+		jokeLoader.completeLoadJoke(with: Joke(text: "Any joke"))
 
 		let textView = try XCTUnwrap(sut.textView)
 		XCTAssertNotEqual(textView.text, "", "A not empty text was set")
@@ -73,14 +73,14 @@ final class MockJokeLoader: JokeLoader {
 	}
 
 	var receivedMessages: [ReceivedMessage] = []
-	var completions: [(String?) -> Void] = []
+	var completions: [(Joke?) -> Void] = []
 
-	func loadNewJoke(completion: @escaping (String?) -> Void) {
+	func loadNewJoke(completion: @escaping (Joke?) -> Void) {
 		self.receivedMessages.append(.loadJoke)
 		self.completions.append(completion)
 	}
 
-	func completeLoadJoke(at index: Int = 0, with result: String?) {
+	func completeLoadJoke(at index: Int = 0, with result: Joke?) {
 		self.completions[index](result)
 	}
 }

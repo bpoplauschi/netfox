@@ -88,18 +88,18 @@ final class RemoteJokeLoaderTests: XCTestCase {
 
 		let result = loadNewJokeResultFor((data: jsonString.data(using: .utf8), response: httpResponse(statusCode: 200), error: nil), sut: sut)
 
-		XCTAssertEqual(result, "any joke")
+		XCTAssertEqual(result?.text, "any joke")
 	}
 
 	private func loadNewJokeResultFor(
 		_ values: (data: Data?, response: URLResponse?, error: Error?)?,
 		sut: RemoteJokeLoader
-	) -> String? {
+	) -> Joke? {
 		values.map { URLProtocolStub.stub(data: $0, response: $1, error: $2) }
 
 		let exp = expectation(description: "Wait for request")
 
-		var receivedResult: String?
+		var receivedResult: Joke?
 
 		sut.loadNewJoke(completion: { result in
 			receivedResult = result

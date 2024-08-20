@@ -1,7 +1,11 @@
 import UIKit
 
+struct Joke {
+	let text: String
+}
+
 protocol JokeLoader {
-	func loadNewJoke(completion: @escaping (String?) -> Void)
+	func loadNewJoke(completion: @escaping (Joke?) -> Void)
 }
 
 final class RemoteJokeLoader: JokeLoader {
@@ -17,7 +21,7 @@ final class RemoteJokeLoader: JokeLoader {
 		self.session = session
 	}
 
-	func loadNewJoke(completion: @escaping (String?) -> Void) {
+	func loadNewJoke(completion: @escaping (Joke?) -> Void) {
 		dataTask?.cancel()
 
 		let request = URLRequest(url: url)
@@ -37,7 +41,7 @@ final class RemoteJokeLoader: JokeLoader {
 		error: Error?,
 		data: Data?,
 		response: URLResponse?,
-		completion: @escaping (String?) -> Void
+		completion: @escaping (Joke?) -> Void
 	) {
 		if let error = error {
 			self.handleCompletion(error: error.localizedDescription, data: data, completion: completion)
@@ -53,7 +57,7 @@ final class RemoteJokeLoader: JokeLoader {
 	private func handleCompletion(
 		error: String?,
 		data: Data?,
-		completion: @escaping (String?) -> Void
+		completion: @escaping (Joke?) -> Void
 	) {
 		DispatchQueue.main.async {
 
@@ -68,7 +72,7 @@ final class RemoteJokeLoader: JokeLoader {
 					let dict = try JSONSerialization.jsonObject(with: data, options: []) as? [String : Any]
 
 					if let message = dict?["value"] as? String {
-						completion(message)
+						completion(Joke(text: message))
 					} else {
 						completion(nil)
 					}
@@ -111,8 +115,8 @@ final class TextViewController: UIViewController {
     }
 	
 	@IBAction private func tappedLoad(_ sender: Any) {
-		jokeLoader.loadNewJoke(completion: { text in
-			self.textView.text = text
+		jokeLoader.loadNewJoke(completion: { joke in
+			self.textView.text = joke?.text
 			self.onDataLoad?()
 		})
     }

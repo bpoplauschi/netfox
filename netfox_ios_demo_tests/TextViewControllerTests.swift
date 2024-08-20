@@ -28,40 +28,60 @@ final class TextViewControllerTests: XCTestCase {
 
 	func test_loadButtonTap_onSuccess_setsText() throws {
 		let (sut, jokeLoader) = makeSUT()
-		let exp = expectation(description: "Wait for data load completion")
-		sut.onDataLoad = { exp.fulfill() }
 		sut.loadViewIfNeeded()
+		XCTAssertEqual(jokeLoader.receivedMessages, [])
 
 		let loadButton = try XCTUnwrap(sut.loadButton)
 		loadButton.simulateTap()
 
-		wait(for: [exp], timeout: 2.0)
+		XCTAssertEqual(jokeLoader.receivedMessages, [.loadJoke])
+
+		jokeLoader.completeLoadJoke(with: "Any joke")
+
 		let textView = try XCTUnwrap(sut.textView)
 		XCTAssertNotEqual(textView.text, "", "A not empty text was set")
 	}
 
 	func test_loadButtonTap_onCancel_doesNotSetText() throws {
 		let (sut, jokeLoader) = makeSUT()
-		let exp = expectation(description: "Wait for data load completion")
-		sut.onDataLoad = { exp.fulfill() }
 		sut.loadViewIfNeeded()
+		XCTAssertEqual(jokeLoader.receivedMessages, [])
 
 		let loadButton = try XCTUnwrap(sut.loadButton)
 		loadButton.simulateTap()
-		jokeLoader.cancelLoad()
 
-		wait(for: [exp], timeout: 2.0)
+		XCTAssertEqual(jokeLoader.receivedMessages, [.loadJoke])
+
+		jokeLoader.completeLoadJoke(with: nil)
+
 		let textView = try XCTUnwrap(sut.textView)
 		XCTAssertEqual(textView.text, "", "Same empty text")
 	}
 
 	// MARK: - Private
 
-	private func makeSUT() -> (TextViewController, RemoteJokeLoader) {
-		let session = URLSession(configuration: .ephemeral)
-		let jokeLoader = RemoteJokeLoader(session: session)
+	private func makeSUT() -> (TextViewController, MockJokeLoader) {
+		let jokeLoader = MockJokeLoader()
 		let sut = TextViewController.loadFromStoryboard(jokeLoader: jokeLoader)
 		return (sut, jokeLoader)
+	}
+}
+
+final class MockJokeLoader: JokeLoader {
+	enum ReceivedMessage: Equatable {
+		case loadJoke
+	}
+
+	var receivedMessages: [ReceivedMessage] = []
+	var completions: [(String?) -> Void] = []
+
+	func loadNewJoke(completion: @escaping (String?) -> Void) {
+		self.receivedMessages.append(.loadJoke)
+		self.completions.append(completion)
+	}
+
+	func completeLoadJoke(at index: Int = 0, with result: String?) {
+		self.completions[index](result)
 	}
 }
 

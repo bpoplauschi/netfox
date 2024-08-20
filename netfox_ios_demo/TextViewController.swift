@@ -1,11 +1,12 @@
 import UIKit
 
-struct Joke {
+struct Joke: Equatable {
 	let text: String
 }
 
 protocol JokeLoader {
-	func loadNewJoke(completion: @escaping (Joke?) -> Void)
+	typealias JokeResult = Result<Joke, Error>
+	func loadNewJoke(completion: @escaping (JokeResult) -> Void)
 }
 
 final class RemoteJokeLoader: JokeLoader {
@@ -21,7 +22,7 @@ final class RemoteJokeLoader: JokeLoader {
 		self.session = session
 	}
 
-	func loadNewJoke(completion: @escaping (Joke?) -> Void) {
+	func loadNewJoke(completion: @escaping (JokeResult) -> Void) {
 		dataTask?.cancel()
 
 		let request = URLRequest(url: url)
@@ -41,7 +42,7 @@ final class RemoteJokeLoader: JokeLoader {
 		error: Error?,
 		data: Data?,
 		response: URLResponse?,
-		completion: @escaping (Joke?) -> Void
+		completion: @escaping (JokeResult) -> Void
 	) {
 		if let error = error {
 			self.handleError(error: error.localizedDescription, completion: completion)
@@ -54,13 +55,15 @@ final class RemoteJokeLoader: JokeLoader {
 		}
 	}
 
+	private struct GenericLoadError: Error {}
+
 	private func handleError(
 		error: String,
-		completion: @escaping (Joke?) -> Void
+		completion: @escaping (JokeResult) -> Void
 	) {
 		DispatchQueue.main.async {
 			NSLog(error)
-			completion(nil)
+			completion(.failure(GenericLoadError()))
 		}
 	}
 
@@ -74,17 +77,17 @@ final class RemoteJokeLoader: JokeLoader {
 
 	private func handleSuccess(
 		data: Data,
-		completion: @escaping (Joke?) -> Void
+		completion: @escaping (JokeResult) -> Void
 	) {
 		do {
 			let decoder = JSONDecoder()
 			let joke = try decoder.decode(RemoteJoke.self, from: data)
 			DispatchQueue.main.async {
-				completion(joke.asJoke)
+				completion(.success(joke.asJoke))
 			}
 		} catch {
 			DispatchQueue.main.async {
-				completion(nil)
+				completion(.failure(error))
 			}
 		}
 	}
@@ -121,8 +124,16 @@ final class TextViewController: UIViewController {
     }
 	
 	@IBAction private func tappedLoad(_ sender: Any) {
-		jokeLoader.loadNewJoke(completion: { joke in
-			self.textView.text = joke?.text
+		jokeLoader.loadNewJoke(completion: { result in
+			switch result {
+			case .success(let joke):
+				self.textView.text = joke.text
+
+			case .failure(let error):
+				print(error)
+				self.textView.text = ""
+			}
+
 			self.onDataLoad?()
 		})
     }

@@ -27,7 +27,13 @@ final class RemoteJokeLoaderTests: XCTestCase {
 
 		let result = loadNewJokeResultFor((data: nil, response: nil, error: nil), sut: sut)
 
-		XCTAssertNil(result)
+		switch result {
+		case .success, .none:
+			XCTFail("Expected failure")
+
+		case .failure:
+			break
+		}
 	}
 
 	func test_loadNewJoke_onError() {
@@ -35,7 +41,13 @@ final class RemoteJokeLoaderTests: XCTestCase {
 
 		let result = loadNewJokeResultFor((data: nil, response: nil, error: NSError(domain: "", code: 0)), sut: sut)
 
-		XCTAssertNil(result)
+		switch result {
+		case .success, .none:
+			XCTFail("Expected failure")
+
+		case .failure:
+			break
+		}
 	}
 
 	func test_loadNewJoke_onHTTPSuccessWithoutData() {
@@ -43,7 +55,13 @@ final class RemoteJokeLoaderTests: XCTestCase {
 
 		let result = loadNewJokeResultFor((data: nil, response: httpResponse(statusCode: 200), error: nil), sut: sut)
 
-		XCTAssertNil(result)
+		switch result {
+		case .success, .none:
+			XCTFail("Expected failure")
+
+		case .failure:
+			break
+		}
 	}
 
 	func test_loadNewJoke_onInvalidResponse() {
@@ -51,7 +69,13 @@ final class RemoteJokeLoaderTests: XCTestCase {
 
 		let result = loadNewJokeResultFor((data: "any joke".data(using: .utf8), response: URLResponse(), error: nil), sut: sut)
 
-		XCTAssertNil(result)
+		switch result {
+		case .success, .none:
+			XCTFail("Expected failure")
+
+		case .failure:
+			break
+		}
 	}
 
 	func test_loadNewJoke_onHTTPNotSuccessCode() {
@@ -61,7 +85,13 @@ final class RemoteJokeLoaderTests: XCTestCase {
 
 			let result = loadNewJokeResultFor((data: jsonString.data(using: .utf8), response: httpResponse(statusCode: statusCode), error: nil), sut: sut)
 
-			XCTAssertNil(result)
+			switch result {
+			case .success, .none:
+				XCTFail("Expected failure")
+
+			case .failure:
+				break
+			}
 		}
 	}
 
@@ -70,7 +100,13 @@ final class RemoteJokeLoaderTests: XCTestCase {
 
 		let result = loadNewJokeResultFor((data: "any joke".data(using: .utf8), response: httpResponse(statusCode: 200), error: nil), sut: sut)
 
-		XCTAssertNil(result)
+		switch result {
+		case .success, .none:
+			XCTFail("Expected failure")
+
+		case .failure:
+			break
+		}
 	}
 
 	func test_loadNewJoke_onHTTPSuccessWithJSONButMissingValueKey() {
@@ -79,27 +115,40 @@ final class RemoteJokeLoaderTests: XCTestCase {
 
 		let result = loadNewJokeResultFor((data: jsonString.data(using: .utf8), response: httpResponse(statusCode: 200), error: nil), sut: sut)
 
-		XCTAssertNil(result)
+		switch result {
+		case .success, .none:
+			XCTFail("Expected failure")
+
+		case .failure:
+			break
+		}
 	}
 
 	func test_loadNewJoke_onSuccess() {
 		let sut = makeSUT()
-		let jsonString = "{\"value\": \"any joke\"}"
+		let jokeText = "any joke"
+		let jsonString = "{\"value\": \"\(jokeText)\"}"
 
 		let result = loadNewJokeResultFor((data: jsonString.data(using: .utf8), response: httpResponse(statusCode: 200), error: nil), sut: sut)
 
-		XCTAssertEqual(result?.text, "any joke")
+		switch result {
+		case .success(let joke):
+			XCTAssertEqual(joke, Joke(text: jokeText))
+			
+		case .failure, .none:
+			XCTFail("Expected success")
+		}
 	}
 
 	private func loadNewJokeResultFor(
 		_ values: (data: Data?, response: URLResponse?, error: Error?)?,
 		sut: RemoteJokeLoader
-	) -> Joke? {
+	) -> JokeLoader.JokeResult? {
 		values.map { URLProtocolStub.stub(data: $0, response: $1, error: $2) }
 
 		let exp = expectation(description: "Wait for request")
 
-		var receivedResult: Joke?
+		var receivedResult: JokeLoader.JokeResult?
 
 		sut.loadNewJoke(completion: { result in
 			receivedResult = result

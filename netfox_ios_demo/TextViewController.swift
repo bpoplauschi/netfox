@@ -44,13 +44,23 @@ final class RemoteJokeLoader: JokeLoader {
 		completion: @escaping (Joke?) -> Void
 	) {
 		if let error = error {
-			self.handleCompletion(error: error.localizedDescription, data: data, completion: completion)
+			self.handleError(error: error.localizedDescription, completion: completion)
 		} else {
-			guard let data = data else { self.handleCompletion(error: "Invalid data", data: nil, completion: completion); return }
-			guard let response = response as? HTTPURLResponse else { self.handleCompletion(error: "Invalid response", data: data, completion: completion); return }
-			guard response.statusCode >= 200 && response.statusCode < 300 else { self.handleCompletion(error: "Invalid response code", data: data, completion: completion); return }
+			guard let data = data else { self.handleError(error: "Invalid data", completion: completion); return }
+			guard let response = response as? HTTPURLResponse else { self.handleError(error: "Invalid response", completion: completion); return }
+			guard response.statusCode >= 200 && response.statusCode < 300 else { self.handleError(error: "Invalid response code", completion: completion); return }
 
 			self.handleCompletion(error: error?.localizedDescription, data: data, completion: completion)
+		}
+	}
+
+	private func handleError(
+		error: String,
+		completion: @escaping (Joke?) -> Void
+	) {
+		DispatchQueue.main.async {
+			NSLog(error)
+			completion(nil)
 		}
 	}
 

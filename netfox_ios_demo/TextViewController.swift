@@ -5,7 +5,8 @@ class TextViewController: UIViewController {
     @IBOutlet weak var textView: UITextView!
     var session: URLSession!
     var dataTask: URLSessionDataTask?
-    
+	var onDataLoad: (() -> Void)?
+
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
@@ -39,6 +40,7 @@ class TextViewController: UIViewController {
             
             if let error = error {
                 NSLog(error)
+				self.onDataLoad?()
                 return
             }
             
@@ -48,6 +50,7 @@ class TextViewController: UIViewController {
                     
                     if let message = dict?["value"] as? String {
                         self.textView.text = message
+						self.onDataLoad?()
                     }
                 } catch {
                     

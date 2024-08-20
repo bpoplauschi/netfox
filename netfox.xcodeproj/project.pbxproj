@@ -410,7 +410,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1520;
-				LastUpgradeCheck = 1310;
+				LastUpgradeCheck = 1520;
 				ORGANIZATIONNAME = kasketis;
 				TargetAttributes = {
 					4374671F2C73AE5800A94E66 = {

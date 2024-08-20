@@ -93,6 +93,7 @@
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Or2-c7-Xhp">
                                 <rect key="frame" x="0.0" y="568" width="375" height="50"/>
+                                <accessibility key="accessibilityConfiguration" identifier="loadButton"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="mEX-cq-aLL"/>
                                 </constraints>
@@ -104,6 +105,7 @@
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0rC-Qf-8Wt">
                                 <rect key="frame" x="20" y="2" width="335" height="566"/>
                                 <color key="backgroundColor" systemColor="tertiarySystemBackgroundColor"/>
+                                <accessibility key="accessibilityConfiguration" identifier="textView"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>

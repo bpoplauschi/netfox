@@ -1,5 +1,30 @@
 import UIKit
 
+final class RemoteJokeLoader {
+	private var session: URLSession
+	private var dataTask: URLSessionDataTask?
+
+	init(session: URLSession) {
+		self.session = session
+	}
+
+	func loadNewJoke(completion: @escaping (Error?, Data?, URLResponse?) -> Void) {
+		dataTask?.cancel()
+
+		guard let url = URL(string: "https://api.chucknorris.io/jokes/random") else { return }
+		let request = URLRequest(url: url)
+		dataTask = session.dataTask(with: request) { (data, response, error) in
+			completion(error, data, response)
+		}
+
+		dataTask?.resume()
+	}
+
+	func cancelLoad() {
+		dataTask?.cancel()
+	}
+}
+
 final class TextViewController: UIViewController {
     @IBOutlet private weak var textView: UITextView!
 	private var session: URLSession!

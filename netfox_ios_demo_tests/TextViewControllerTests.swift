@@ -40,6 +40,21 @@ final class TextViewControllerTests: XCTestCase {
 		XCTAssertNotEqual(textView.text, "", "A not empty text was set")
 	}
 
+	func test_loadButtonTap_onCancel_doesNotSetText() throws {
+		let sut = makeSUT()
+		let exp = expectation(description: "Wait for data load completion")
+		sut.onDataLoad = { exp.fulfill() }
+		sut.loadViewIfNeeded()
+
+		let loadButton = try XCTUnwrap(sut.loadButton)
+		loadButton.simulateTap()
+		sut.dataTask?.cancel()
+
+		wait(for: [exp], timeout: 2.0)
+		let textView = try XCTUnwrap(sut.textView)
+		XCTAssertEqual(textView.text, "", "Same empty text")
+	}
+
 	// MARK: - Private
 
 	private func makeSUT() -> TextViewController {

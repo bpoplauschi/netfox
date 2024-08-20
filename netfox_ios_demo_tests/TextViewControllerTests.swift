@@ -14,6 +14,15 @@ final class TextViewControllerTests: XCTestCase {
 		let _ = makeSUT()
 	}
 
+	func test_viewDidLoad_loadsViews() throws {
+		let sut = makeSUT()
+
+		sut.loadViewIfNeeded()
+
+		XCTAssertNotNil(sut.view)
+		let _ = try XCTUnwrap(sut.view.subviews.first(where: { $0 is UITextView }) as? UITextView)
+	}
+
 	// MARK: - Private
 
 	private func makeSUT() -> TextViewController {

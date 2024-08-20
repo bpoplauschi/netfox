@@ -9,6 +9,50 @@ protocol JokeLoader {
 	func loadNewJoke(completion: @escaping (JokeResult) -> Void)
 }
 
+private class RemoteJokeMapper {
+	static func map(
+		error: Error?,
+		data: Data?,
+		response: URLResponse?
+	) -> JokeLoader.JokeResult {
+		if let error = error {
+			return .failure(error)
+		} else {
+			guard let data = data else {
+				return .failure(RemoteJokeLoader.LoadError.invalidData)
+			}
+			guard let response = response as? HTTPURLResponse else {
+				return .failure(RemoteJokeLoader.LoadError.invalidResponse)
+			}
+			guard response.statusCode >= 200 && response.statusCode < 300 else {
+				return .failure(RemoteJokeLoader.LoadError.invalidStatusCode)
+			}
+
+			return self.map(data: data)
+		}
+	}
+
+	private static func map(
+		data: Data
+	) -> JokeLoader.JokeResult {
+		do {
+			let decoder = JSONDecoder()
+			let joke = try decoder.decode(RemoteJoke.self, from: data)
+			return .success(joke.asJoke)
+		} catch {
+			return .failure(error)
+		}
+	}
+
+	private struct RemoteJoke: Codable {
+		let value: String
+
+		var asJoke: Joke {
+			return Joke(text: self.value)
+		}
+	}
+}
+
 final class RemoteJokeLoader: JokeLoader {
 	enum LoadError: Error {
 		case invalidData
@@ -33,74 +77,13 @@ final class RemoteJokeLoader: JokeLoader {
 
 		let request = URLRequest(url: url)
 		dataTask = session.dataTask(with: request) { (data, response, error) in
-			self.handleLoadResponse(
-				error: error,
-				data: data,
-				response: response,
-				completion: completion
-			)
+			let result = RemoteJokeMapper.map(error: error, data: data, response: response)
+			DispatchQueue.main.async {
+				completion(result)
+			}
 		}
 
 		dataTask?.resume()
-	}
-
-	private func handleLoadResponse(
-		error: Error?,
-		data: Data?,
-		response: URLResponse?,
-		completion: @escaping (JokeResult) -> Void
-	) {
-		if let error = error {
-			DispatchQueue.main.async {
-				completion(.failure(error))
-			}
-		} else {
-			guard let data = data else {
-				DispatchQueue.main.async {
-					completion(.failure(LoadError.invalidData))
-				}
-				return
-			}
-			guard let response = response as? HTTPURLResponse else {
-				DispatchQueue.main.async {
-					completion(.failure(LoadError.invalidResponse))
-				}
-				return
-			}
-			guard response.statusCode >= 200 && response.statusCode < 300 else {
-				DispatchQueue.main.async {
-					completion(.failure(LoadError.invalidStatusCode))
-				}
-				return
-			}
-
-			self.handleSuccess(data: data, completion: completion)
-		}
-	}
-
-	private struct RemoteJoke: Codable {
-		let value: String
-
-		var asJoke: Joke {
-			return Joke(text: self.value)
-		}
-	}
-
-	private func handleSuccess(
-		data: Data,
-		completion: @escaping (JokeResult) -> Void
-	) {
-		do {
-			let decoder = JSONDecoder()
-			let joke = try decoder.decode(RemoteJoke.self, from: data)
-			DispatchQueue.main.async {
-				completion(.success(joke.asJoke))
-			}
-		} catch {
-			DispatchQueue.main.async {
-				completion(.failure(error))
-			}
-		}
 	}
 }
 

@@ -60,7 +60,7 @@ final class TextViewControllerTests: XCTestCase {
 	private func makeSUT() -> (TextViewController, RemoteJokeLoader) {
 		let session = URLSession(configuration: .ephemeral)
 		let jokeLoader = RemoteJokeLoader(session: session)
-		let sut = TextViewController.loadFromStoryboard(jokeLoader: jokeLoader, session: session)
+		let sut = TextViewController.loadFromStoryboard(jokeLoader: jokeLoader)
 		return (sut, jokeLoader)
 	}
 }

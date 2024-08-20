@@ -28,13 +28,10 @@ final class RemoteJokeLoader {
 final class TextViewController: UIViewController {
     @IBOutlet private weak var textView: UITextView!
 	private var jokeLoader: RemoteJokeLoader!
-	private var session: URLSession!
-	private var dataTask: URLSessionDataTask?
 	var onDataLoad: (() -> Void)?
 
 	static func loadFromStoryboard(
-		jokeLoader: RemoteJokeLoader,
-		session: URLSession
+		jokeLoader: RemoteJokeLoader
 	) -> TextViewController {
 		let storyboard = UIStoryboard(name: "Main", bundle: .main)
 		return storyboard.instantiateViewController(
@@ -42,15 +39,13 @@ final class TextViewController: UIViewController {
 			creator: { coder in
 				return TextViewController(
 					jokeLoader: jokeLoader,
-					session: session,
 					coder: coder
 				)
 			}
 		)
 	}
 
-	init?(jokeLoader: RemoteJokeLoader, session: URLSession, coder: NSCoder) {
-		self.session = session
+	init?(jokeLoader: RemoteJokeLoader, coder: NSCoder) {
 		self.jokeLoader = jokeLoader
 		super.init(coder: coder)
 	}
@@ -100,10 +95,3 @@ final class TextViewController: UIViewController {
         }
     }
 }
-
-extension TextViewController : URLSessionDelegate {
-    func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
-        completionHandler(URLSession.AuthChallengeDisposition.useCredential, nil)
-    }
-}
-

@@ -1,10 +1,10 @@
 import UIKit
 
-class TextViewController: UIViewController {
-    
-    @IBOutlet weak var textView: UITextView!
-    var session: URLSession!
-    var dataTask: URLSessionDataTask?
+final class TextViewController: UIViewController {
+
+    @IBOutlet private weak var textView: UITextView!
+	private var session: URLSession!
+	private var dataTask: URLSessionDataTask?
 	var onDataLoad: (() -> Void)?
 
     required init?(coder aDecoder: NSCoder) {
@@ -58,6 +58,10 @@ class TextViewController: UIViewController {
             }
         }
     }
+
+	func cancelLoad() {
+		dataTask?.cancel()
+	}
 }
 
 extension TextViewController : URLSessionDelegate {

@@ -48,7 +48,7 @@ final class TextViewControllerTests: XCTestCase {
 
 		let loadButton = try XCTUnwrap(sut.loadButton)
 		loadButton.simulateTap()
-		sut.dataTask?.cancel()
+		sut.cancelLoad()
 
 		wait(for: [exp], timeout: 2.0)
 		let textView = try XCTUnwrap(sut.textView)

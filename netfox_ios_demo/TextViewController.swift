@@ -76,12 +76,14 @@ final class RemoteJokeLoader: JokeLoader {
 		data: Data,
 		completion: @escaping (Joke?) -> Void
 	) {
-		DispatchQueue.main.async {
-			do {
-				let decoder = JSONDecoder()
-				let joke = try decoder.decode(RemoteJoke.self, from: data)
+		do {
+			let decoder = JSONDecoder()
+			let joke = try decoder.decode(RemoteJoke.self, from: data)
+			DispatchQueue.main.async {
 				completion(joke.asJoke)
-			} catch {
+			}
+		} catch {
+			DispatchQueue.main.async {
 				completion(nil)
 			}
 		}

@@ -10,6 +10,7 @@
 		026274D9214C6BC400AE1BDF /* WKWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026274D8214C6BC400AE1BDF /* WKWebViewController.swift */; };
 		3708AD5A22D4A9DD0050DB7D /* NFXURLDetailsControllerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3708AD5922D4A9DD0050DB7D /* NFXURLDetailsControllerViewController.swift */; };
 		43BC594F2C74AB9900B0F923 /* TextViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437467292C73AE7B00A94E66 /* TextViewControllerTests.swift */; };
+		43BC59512C74C44000B0F923 /* RemoteJokeLoaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BC59502C74C44000B0F923 /* RemoteJokeLoaderTests.swift */; };
 		719756B3279C7EC500402E07 /* netfox_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B3BC020F1C09CDA000C17F3A /* netfox_ios.framework */; };
 		719756B4279C7EC500402E07 /* netfox_ios.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B3BC020F1C09CDA000C17F3A /* netfox_ios.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8201A39D204E3E3F00AB2C3D /* NFXAuthenticationChallengeSender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8201A39C204E3E3F00AB2C3D /* NFXAuthenticationChallengeSender.swift */; };
@@ -109,6 +110,7 @@
 		3708AD5922D4A9DD0050DB7D /* NFXURLDetailsControllerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NFXURLDetailsControllerViewController.swift; sourceTree = "<group>"; };
 		437467202C73AE5800A94E66 /* netfox_ios_demo_tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = netfox_ios_demo_tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		437467292C73AE7B00A94E66 /* TextViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextViewControllerTests.swift; sourceTree = "<group>"; };
+		43BC59502C74C44000B0F923 /* RemoteJokeLoaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteJokeLoaderTests.swift; sourceTree = "<group>"; };
 		8201A39C204E3E3F00AB2C3D /* NFXAuthenticationChallengeSender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFXAuthenticationChallengeSender.swift; sourceTree = "<group>"; };
 		8229AD621F8FB34300A9D613 /* netfox_ios_demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = netfox_ios_demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8229AD641F8FB34300A9D613 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -194,6 +196,7 @@
 			isa = PBXGroup;
 			children = (
 				437467292C73AE7B00A94E66 /* TextViewControllerTests.swift */,
+				43BC59502C74C44000B0F923 /* RemoteJokeLoaderTests.swift */,
 			);
 			path = netfox_ios_demo_tests;
 			sourceTree = "<group>";
@@ -498,6 +501,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				43BC594F2C74AB9900B0F923 /* TextViewControllerTests.swift in Sources */,
+				43BC59512C74C44000B0F923 /* RemoteJokeLoaderTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

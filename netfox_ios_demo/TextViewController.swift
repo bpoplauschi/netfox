@@ -10,6 +10,12 @@ protocol JokeLoader {
 }
 
 final class RemoteJokeLoader: JokeLoader {
+	enum LoadError: Error {
+		case invalidData
+		case invalidResponse
+		case invalidStatusCode
+	}
+
 	private let url: URL
 	private let session: URLSession
 	private var dataTask: URLSessionDataTask?
@@ -45,25 +51,30 @@ final class RemoteJokeLoader: JokeLoader {
 		completion: @escaping (JokeResult) -> Void
 	) {
 		if let error = error {
-			self.handleError(error: error.localizedDescription, completion: completion)
+			DispatchQueue.main.async {
+				completion(.failure(error))
+			}
 		} else {
-			guard let data = data else { self.handleError(error: "Invalid data", completion: completion); return }
-			guard let response = response as? HTTPURLResponse else { self.handleError(error: "Invalid response", completion: completion); return }
-			guard response.statusCode >= 200 && response.statusCode < 300 else { self.handleError(error: "Invalid response code", completion: completion); return }
+			guard let data = data else {
+				DispatchQueue.main.async {
+					completion(.failure(LoadError.invalidData))
+				}
+				return
+			}
+			guard let response = response as? HTTPURLResponse else {
+				DispatchQueue.main.async {
+					completion(.failure(LoadError.invalidResponse))
+				}
+				return
+			}
+			guard response.statusCode >= 200 && response.statusCode < 300 else {
+				DispatchQueue.main.async {
+					completion(.failure(LoadError.invalidStatusCode))
+				}
+				return
+			}
 
 			self.handleSuccess(data: data, completion: completion)
-		}
-	}
-
-	private struct GenericLoadError: Error {}
-
-	private func handleError(
-		error: String,
-		completion: @escaping (JokeResult) -> Void
-	) {
-		DispatchQueue.main.async {
-			NSLog(error)
-			completion(.failure(GenericLoadError()))
 		}
 	}
 

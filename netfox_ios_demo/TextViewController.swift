@@ -7,6 +7,22 @@ final class TextViewController: UIViewController {
 	private var dataTask: URLSessionDataTask?
 	var onDataLoad: (() -> Void)?
 
+	static func loadFromStoryboard(session: URLSession) -> TextViewController {
+		let storyboard = UIStoryboard(name: "Main", bundle: .main)
+		return storyboard.instantiateViewController(
+			identifier: "TextViewController",
+			creator: { coder in
+				return TextViewController(session: session, coder: coder)
+			}
+		)
+	}
+
+	init?(session: URLSession, coder: NSCoder) {
+		self.session = session
+		super.init(coder: coder)
+	}
+
+	@available(*, unavailable)
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }

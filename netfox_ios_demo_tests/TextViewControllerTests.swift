@@ -58,8 +58,8 @@ final class TextViewControllerTests: XCTestCase {
 	// MARK: - Private
 
 	private func makeSUT() -> TextViewController {
-		let storyboard = UIStoryboard(name: "Main", bundle: .main)
-		let sut = storyboard.instantiateViewController(identifier: "TextViewController") as! TextViewController
+		let session = URLSession(configuration: .ephemeral)
+		let sut = TextViewController.loadFromStoryboard(session: session)
 		return sut
 	}
 }

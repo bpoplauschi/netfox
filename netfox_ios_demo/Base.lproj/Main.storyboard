@@ -86,7 +86,7 @@
         <!--Text-->
         <scene sceneID="JKw-NC-miP">
             <objects>
-                <viewController id="Z8x-dK-Opo" customClass="TextViewController" customModule="netfox_ios_demo" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TextViewController" id="Z8x-dK-Opo" customClass="TextViewController" customModule="netfox_ios_demo" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Ssc-om-GUS">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

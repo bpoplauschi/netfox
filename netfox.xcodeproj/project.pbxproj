@@ -73,6 +73,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		437467242C73AE5800A94E66 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B3BC02061C09CDA000C17F3A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8229AD611F8FB34300A9D613;
+			remoteInfo = netfox_ios_demo;
+		};
 		8229AD741F8FB37000A9D613 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B3BC02061C09CDA000C17F3A /* Project object */;
@@ -99,6 +106,8 @@
 /* Begin PBXFileReference section */
 		026274D8214C6BC400AE1BDF /* WKWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WKWebViewController.swift; sourceTree = "<group>"; };
 		3708AD5922D4A9DD0050DB7D /* NFXURLDetailsControllerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NFXURLDetailsControllerViewController.swift; sourceTree = "<group>"; };
+		437467202C73AE5800A94E66 /* netfox_ios_demo_tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = netfox_ios_demo_tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		437467292C73AE7B00A94E66 /* TextViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextViewControllerTests.swift; sourceTree = "<group>"; };
 		8201A39C204E3E3F00AB2C3D /* NFXAuthenticationChallengeSender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFXAuthenticationChallengeSender.swift; sourceTree = "<group>"; };
 		8229AD621F8FB34300A9D613 /* netfox_ios_demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = netfox_ios_demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8229AD641F8FB34300A9D613 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -148,6 +157,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		4374671D2C73AE5800A94E66 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8229AD5F1F8FB34300A9D613 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -173,6 +189,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		437467212C73AE5800A94E66 /* netfox_ios_demo_tests */ = {
+			isa = PBXGroup;
+			children = (
+				437467292C73AE7B00A94E66 /* TextViewControllerTests.swift */,
+			);
+			path = netfox_ios_demo_tests;
+			sourceTree = "<group>";
+		};
 		8229AD631F8FB34300A9D613 /* netfox_ios_demo */ = {
 			isa = PBXGroup;
 			children = (
@@ -201,6 +225,7 @@
 			children = (
 				CEFE42B41C0DDBD8001A56E0 /* netfox */,
 				8229AD631F8FB34300A9D613 /* netfox_ios_demo */,
+				437467212C73AE5800A94E66 /* netfox_ios_demo_tests */,
 				B3BC02101C09CDA000C17F3A /* Products */,
 				8229AD761F8FB4B500A9D613 /* Frameworks */,
 			);
@@ -212,6 +237,7 @@
 				B3BC020F1C09CDA000C17F3A /* netfox_ios.framework */,
 				E20FD2E91C6912D400DCFF61 /* netfox_osx.framework */,
 				8229AD621F8FB34300A9D613 /* netfox_ios_demo.app */,
+				437467202C73AE5800A94E66 /* netfox_ios_demo_tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -303,6 +329,24 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		4374671F2C73AE5800A94E66 /* netfox_ios_demo_tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 437467282C73AE5800A94E66 /* Build configuration list for PBXNativeTarget "netfox_ios_demo_tests" */;
+			buildPhases = (
+				4374671C2C73AE5800A94E66 /* Sources */,
+				4374671D2C73AE5800A94E66 /* Frameworks */,
+				4374671E2C73AE5800A94E66 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				437467252C73AE5800A94E66 /* PBXTargetDependency */,
+			);
+			name = netfox_ios_demo_tests;
+			productName = netfox_ios_demo_tests;
+			productReference = 437467202C73AE5800A94E66 /* netfox_ios_demo_tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		8229AD611F8FB34300A9D613 /* netfox_ios_demo */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8229AD711F8FB34300A9D613 /* Build configuration list for PBXNativeTarget "netfox_ios_demo" */;
@@ -364,10 +408,16 @@
 		B3BC02061C09CDA000C17F3A /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0720;
+				LastSwiftUpdateCheck = 1520;
 				LastUpgradeCheck = 1310;
 				ORGANIZATIONNAME = kasketis;
 				TargetAttributes = {
+					4374671F2C73AE5800A94E66 = {
+						CreatedOnToolsVersion = 15.2;
+						LastSwiftMigration = 1520;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 8229AD611F8FB34300A9D613;
+					};
 					8229AD611F8FB34300A9D613 = {
 						CreatedOnToolsVersion = 9.0;
 						LastSwiftMigration = 1020;
@@ -399,11 +449,19 @@
 				B3BC020E1C09CDA000C17F3A /* netfox_ios */,
 				E20FD2E81C6912D400DCFF61 /* netfox_osx */,
 				8229AD611F8FB34300A9D613 /* netfox_ios_demo */,
+				4374671F2C73AE5800A94E66 /* netfox_ios_demo_tests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		4374671E2C73AE5800A94E66 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8229AD601F8FB34300A9D613 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -434,6 +492,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		4374671C2C73AE5800A94E66 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8229AD5E1F8FB34300A9D613 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -513,6 +578,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		437467252C73AE5800A94E66 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8229AD611F8FB34300A9D613 /* netfox_ios_demo */;
+			targetProxy = 437467242C73AE5800A94E66 /* PBXContainerItemProxy */;
+		};
 		8229AD751F8FB37000A9D613 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = B3BC020E1C09CDA000C17F3A /* netfox_ios */;
@@ -540,6 +610,30 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		437467262C73AE5800A94E66 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "tests.netfox-ios-demo-tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/netfox_ios_demo.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/netfox_ios_demo";
+			};
+			name = Debug;
+		};
+		437467272C73AE5800A94E66 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "tests.netfox-ios-demo-tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/netfox_ios_demo.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/netfox_ios_demo";
+			};
+			name = Release;
+		};
 		8229AD721F8FB34300A9D613 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -651,7 +745,9 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -706,6 +802,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -814,6 +911,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		437467282C73AE5800A94E66 /* Build configuration list for PBXNativeTarget "netfox_ios_demo_tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				437467262C73AE5800A94E66 /* Debug */,
+				437467272C73AE5800A94E66 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		8229AD711F8FB34300A9D613 /* Build configuration list for PBXNativeTarget "netfox_ios_demo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

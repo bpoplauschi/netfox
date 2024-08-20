@@ -1,7 +1,6 @@
 import UIKit
 
 final class TextViewController: UIViewController {
-
     @IBOutlet private weak var textView: UITextView!
 	private var session: URLSession!
 	private var dataTask: URLSessionDataTask?
@@ -27,13 +26,9 @@ final class TextViewController: UIViewController {
         super.init(coder: aDecoder)
     }
     
-    @IBAction func tappedLoad(_ sender: Any) {
+    @IBAction private func tappedLoad(_ sender: Any) {
         dataTask?.cancel()
-        
-        if session == nil {
-            session = URLSession(configuration: URLSessionConfiguration.default, delegate: self, delegateQueue: nil)
-        }
-        
+
         guard let url = URL(string: "https://api.chucknorris.io/jokes/random") else { return }
         let request = URLRequest(url: url)
         dataTask = session.dataTask(with: request) { (data, response, error) in

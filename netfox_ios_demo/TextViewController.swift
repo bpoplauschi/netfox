@@ -74,10 +74,6 @@ final class RemoteJokeLoader: JokeLoader {
 			}
 		}
 	}
-
-	func cancelLoad() {
-		dataTask?.cancel()
-	}
 }
 
 final class TextViewController: UIViewController {

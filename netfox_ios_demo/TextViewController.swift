@@ -54,6 +54,14 @@ final class RemoteJokeLoader: JokeLoader {
 		}
 	}
 
+	private struct RemoteJoke: Codable {
+		let value: String
+
+		var asJoke: Joke {
+			return Joke(text: self.value)
+		}
+	}
+
 	private func handleCompletion(
 		error: String?,
 		data: Data?,
@@ -69,13 +77,9 @@ final class RemoteJokeLoader: JokeLoader {
 
 			if let data = data {
 				do {
-					let dict = try JSONSerialization.jsonObject(with: data, options: []) as? [String : Any]
-
-					if let message = dict?["value"] as? String {
-						completion(Joke(text: message))
-					} else {
-						completion(nil)
-					}
+					let decoder = JSONDecoder()
+					let joke = try decoder.decode(RemoteJoke.self, from: data)
+					completion(joke.asJoke)
 				} catch {
 					completion(nil)
 				}

@@ -26,6 +26,19 @@ final class RemoteJokeLoaderTests: XCTestCase {
 		wait(for: [exp], timeout: 1.0)
 	}
 
+	func test_loadNewJoke_onCancel() {
+		let sut = makeSUT()
+		let exp = expectation(description: "Wait for completion")
+
+		sut.loadNewJoke(completion: { result in
+			XCTAssertNil(result)
+			exp.fulfill()
+		})
+		sut.cancelLoad()
+
+		wait(for: [exp], timeout: 1.0)
+	}
+
 	private func makeSUT() -> RemoteJokeLoader {
 		let session = URLSession(configuration: .ephemeral)
 		return RemoteJokeLoader(session: session)

@@ -5,17 +5,21 @@ protocol JokeLoader {
 }
 
 final class RemoteJokeLoader: JokeLoader {
+	private let url: URL
 	private let session: URLSession
 	private var dataTask: URLSessionDataTask?
 
-	init(session: URLSession) {
+	init(
+		url: URL = URL(string: "https://api.chucknorris.io/jokes/random")!,
+		session: URLSession
+	) {
+		self.url = url
 		self.session = session
 	}
 
 	func loadNewJoke(completion: @escaping (String?) -> Void) {
 		dataTask?.cancel()
 
-		guard let url = URL(string: "https://api.chucknorris.io/jokes/random") else { return }
 		let request = URLRequest(url: url)
 		dataTask = session.dataTask(with: request) { (data, response, error) in
 			self.handleLoadResponse(

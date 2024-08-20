@@ -11,11 +11,11 @@ import XCTest
 
 final class TextViewControllerTests: XCTestCase {
 	func test_init_doesNotCrash() {
-		let _ = makeSUT()
+		let (_, _) = makeSUT()
 	}
 
 	func test_viewDidLoad_loadsViews() throws {
-		let sut = makeSUT()
+		let (sut, _) = makeSUT()
 
 		sut.loadViewIfNeeded()
 
@@ -27,7 +27,7 @@ final class TextViewControllerTests: XCTestCase {
 	}
 
 	func test_loadButtonTap_onSuccess_setsText() throws {
-		let sut = makeSUT()
+		let (sut, _) = makeSUT()
 		let exp = expectation(description: "Wait for data load completion")
 		sut.onDataLoad = { exp.fulfill() }
 		sut.loadViewIfNeeded()
@@ -41,14 +41,14 @@ final class TextViewControllerTests: XCTestCase {
 	}
 
 	func test_loadButtonTap_onCancel_doesNotSetText() throws {
-		let sut = makeSUT()
+		let (sut, jokeLoader) = makeSUT()
 		let exp = expectation(description: "Wait for data load completion")
 		sut.onDataLoad = { exp.fulfill() }
 		sut.loadViewIfNeeded()
 
 		let loadButton = try XCTUnwrap(sut.loadButton)
 		loadButton.simulateTap()
-		sut.cancelLoad()
+		jokeLoader.cancelLoad()
 
 		wait(for: [exp], timeout: 2.0)
 		let textView = try XCTUnwrap(sut.textView)
@@ -57,11 +57,11 @@ final class TextViewControllerTests: XCTestCase {
 
 	// MARK: - Private
 
-	private func makeSUT() -> TextViewController {
+	private func makeSUT() -> (TextViewController, RemoteJokeLoader) {
 		let session = URLSession(configuration: .ephemeral)
 		let jokeLoader = RemoteJokeLoader(session: session)
 		let sut = TextViewController.loadFromStoryboard(jokeLoader: jokeLoader, session: session)
-		return sut
+		return (sut, jokeLoader)
 	}
 }
 

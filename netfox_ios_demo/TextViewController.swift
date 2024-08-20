@@ -61,15 +61,7 @@ final class TextViewController: UIViewController {
     }
 	
 	@IBAction private func tappedLoad(_ sender: Any) {
-        dataTask?.cancel()
-
-        guard let url = URL(string: "https://api.chucknorris.io/jokes/random") else { return }
-        let request = URLRequest(url: url)
-        dataTask = session.dataTask(with: request) { (data, response, error) in
-			self.handleLoadResponse(error, data, response)
-        }
-        
-        dataTask?.resume()
+		jokeLoader.loadNewJoke(completion: self.handleLoadResponse(_:_:_:))
     }
 
 	private func handleLoadResponse(_ error: Error?, _ data: Data?, _ response: URLResponse?) {
@@ -107,10 +99,6 @@ final class TextViewController: UIViewController {
             }
         }
     }
-
-	func cancelLoad() {
-		dataTask?.cancel()
-	}
 }
 
 extension TextViewController : URLSessionDelegate {

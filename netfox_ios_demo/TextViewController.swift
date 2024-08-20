@@ -9,9 +9,15 @@ protocol JokeLoader {
 	func loadNewJoke(completion: @escaping (JokeResult) -> Void)
 }
 
-private class RemoteJokeMapper {
+final class RemoteJokeMapper {
+	enum Error: Swift.Error {
+		case invalidData
+		case invalidResponse
+		case invalidStatusCode
+	}
+
 	static func map(
-		error: Error?,
+		error: Swift.Error?,
 		data: Data?,
 		response: URLResponse?
 	) -> JokeLoader.JokeResult {
@@ -19,13 +25,13 @@ private class RemoteJokeMapper {
 			return .failure(error)
 		} else {
 			guard let data = data else {
-				return .failure(RemoteJokeLoader.LoadError.invalidData)
+				return .failure(Error.invalidData)
 			}
 			guard let response = response as? HTTPURLResponse else {
-				return .failure(RemoteJokeLoader.LoadError.invalidResponse)
+				return .failure(Error.invalidResponse)
 			}
 			guard response.statusCode >= 200 && response.statusCode < 300 else {
-				return .failure(RemoteJokeLoader.LoadError.invalidStatusCode)
+				return .failure(Error.invalidStatusCode)
 			}
 
 			return self.map(data: data)
@@ -54,12 +60,6 @@ private class RemoteJokeMapper {
 }
 
 final class RemoteJokeLoader: JokeLoader {
-	enum LoadError: Error {
-		case invalidData
-		case invalidResponse
-		case invalidStatusCode
-	}
-
 	private let url: URL
 	private let session: URLSession
 	private var dataTask: URLSessionDataTask?

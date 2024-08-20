@@ -51,7 +51,7 @@ final class RemoteJokeLoaderTests: XCTestCase {
 
 		let result = loadNewJokeResultFor((data: "any joke".data(using: .utf8), response: URLResponse(), error: nil), sut: sut)
 
-		expectedFailure(result, expectedError: RemoteJokeLoader.LoadError.invalidResponse)
+		expectedFailure(result, expectedError: RemoteJokeMapper.Error.invalidResponse)
 	}
 
 	func test_loadNewJoke_onHTTPNotSuccessCode() {
@@ -61,7 +61,7 @@ final class RemoteJokeLoaderTests: XCTestCase {
 
 			let result = loadNewJokeResultFor((data: jsonString.data(using: .utf8), response: httpResponse(statusCode: statusCode), error: nil), sut: sut)
 
-			expectedFailure(result, expectedError: RemoteJokeLoader.LoadError.invalidStatusCode)
+			expectedFailure(result, expectedError: RemoteJokeMapper.Error.invalidStatusCode)
 		}
 	}
 

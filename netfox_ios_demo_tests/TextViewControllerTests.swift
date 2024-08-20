@@ -27,7 +27,7 @@ final class TextViewControllerTests: XCTestCase {
 	}
 
 	func test_loadButtonTap_onSuccess_setsText() throws {
-		let (sut, _) = makeSUT()
+		let (sut, jokeLoader) = makeSUT()
 		let exp = expectation(description: "Wait for data load completion")
 		sut.onDataLoad = { exp.fulfill() }
 		sut.loadViewIfNeeded()

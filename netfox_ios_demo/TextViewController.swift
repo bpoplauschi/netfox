@@ -1,39 +1,73 @@
 import UIKit
 
 final class RemoteJokeLoader {
-	private var session: URLSession
+	private let session: URLSession
 	private var dataTask: URLSessionDataTask?
 
 	init(session: URLSession) {
 		self.session = session
 	}
 
-	func loadNewJoke(completion: @escaping (_ error: String?, _ data: Data?) -> Void) {
+	func loadNewJoke(completion: @escaping (String?) -> Void) {
 		dataTask?.cancel()
 
 		guard let url = URL(string: "https://api.chucknorris.io/jokes/random") else { return }
 		let request = URLRequest(url: url)
 		dataTask = session.dataTask(with: request) { (data, response, error) in
-			self.handleLoadResponse(error, data, response, completion: completion)
+			self.handleLoadResponse(
+				error: error,
+				data: data,
+				response: response,
+				completion: completion
+			)
 		}
 
 		dataTask?.resume()
 	}
 
 	private func handleLoadResponse(
-		_ error: Error?,
-		_ data: Data?,
-		_ response: URLResponse?,
-		completion: @escaping (_ error: String?, _ data: Data?) -> Void
+		error: Error?,
+		data: Data?,
+		response: URLResponse?,
+		completion: @escaping (String?) -> Void
 	) {
 		if let error = error {
-			completion(error.localizedDescription, data)
+			self.handleCompletion(error: error.localizedDescription, data: data, completion: completion)
 		} else {
-			guard let data = data else { completion("Invalid data", nil); return }
-			guard let response = response as? HTTPURLResponse else { completion("Invalid response", data); return }
-			guard response.statusCode >= 200 && response.statusCode < 300 else { completion("Invalid response code", data); return }
+			guard let data = data else { self.handleCompletion(error: "Invalid data", data: nil, completion: completion); return }
+			guard let response = response as? HTTPURLResponse else { self.handleCompletion(error: "Invalid response", data: data, completion: completion); return }
+			guard response.statusCode >= 200 && response.statusCode < 300 else { self.handleCompletion(error: "Invalid response code", data: data, completion: completion); return }
 
-			completion(error?.localizedDescription, data)
+			self.handleCompletion(error: error?.localizedDescription, data: data, completion: completion)
+		}
+	}
+
+	private func handleCompletion(
+		error: String?,
+		data: Data?,
+		completion: @escaping (String?) -> Void
+	) {
+		DispatchQueue.main.async {
+
+			if let error = error {
+				NSLog(error)
+				completion(nil)
+				return
+			}
+
+			if let data = data {
+				do {
+					let dict = try JSONSerialization.jsonObject(with: data, options: []) as? [String : Any]
+
+					if let message = dict?["value"] as? String {
+						completion(message)
+					} else {
+						completion(nil)
+					}
+				} catch {
+					completion(nil)
+				}
+			}
 		}
 	}
 
@@ -73,30 +107,9 @@ final class TextViewController: UIViewController {
     }
 	
 	@IBAction private func tappedLoad(_ sender: Any) {
-		jokeLoader.loadNewJoke(completion: self.handleCompletion(error:data:))
-    }
-
-    private func handleCompletion(error: String?, data: Data?) {
-        DispatchQueue.main.async {
-            
-            if let error = error {
-                NSLog(error)
-				self.onDataLoad?()
-                return
-            }
-            
-            if let data = data {
-                do {
-                    let dict = try JSONSerialization.jsonObject(with: data, options: []) as? [String : Any]
-                    
-                    if let message = dict?["value"] as? String {
-                        self.textView.text = message
-						self.onDataLoad?()
-                    }
-                } catch {
-                    
-                }
-            }
-        }
+		jokeLoader.loadNewJoke(completion: { text in
+			self.textView.text = text
+			self.onDataLoad?()
+		})
     }
 }

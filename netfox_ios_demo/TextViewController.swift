@@ -1,6 +1,10 @@
 import UIKit
 
-final class RemoteJokeLoader {
+protocol JokeLoader {
+	func loadNewJoke(completion: @escaping (String?) -> Void)
+}
+
+final class RemoteJokeLoader: JokeLoader {
 	private let session: URLSession
 	private var dataTask: URLSessionDataTask?
 
@@ -78,11 +82,11 @@ final class RemoteJokeLoader {
 
 final class TextViewController: UIViewController {
     @IBOutlet private weak var textView: UITextView!
-	private var jokeLoader: RemoteJokeLoader!
+	private var jokeLoader: JokeLoader!
 	var onDataLoad: (() -> Void)?
 
 	static func loadFromStoryboard(
-		jokeLoader: RemoteJokeLoader
+		jokeLoader: JokeLoader
 	) -> TextViewController {
 		let storyboard = UIStoryboard(name: "Main", bundle: .main)
 		return storyboard.instantiateViewController(
@@ -96,7 +100,7 @@ final class TextViewController: UIViewController {
 		)
 	}
 
-	init?(jokeLoader: RemoteJokeLoader, coder: NSCoder) {
+	init?(jokeLoader: JokeLoader, coder: NSCoder) {
 		self.jokeLoader = jokeLoader
 		super.init(coder: coder)
 	}
